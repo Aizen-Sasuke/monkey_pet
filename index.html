@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bit, your typing pet</title>
+<meta name="description" content="A pixel pet that grows from your Monkeytype grind.">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#E8EBFF;--card:#F7F8FF;--ink:#26234F;--soft:#6B68A0;--line:#CDD1F5;--btn:#26234F;--btnink:#F7F8FF;--l0:#DADFFA;--l1:#BDEBDD;--l2:#7ED8BC;--l3:#33B99A;--l4:#0E8A73;--stage:#DDE1FF;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#171630;--card:#211F45;--ink:#EDEEFF;--soft:#A3A1D6;--line:#34316A;--btn:#EDEEFF;--btnink:#171630;--l0:#2C2A5A;--l1:#1F5A57;--l2:#238C79;--l3:#3CC3A0;--l4:#8CF0D0;--stage:#2A2858}}
+:root[data-theme="dark"]{--bg:#171630;--card:#211F45;--ink:#EDEEFF;--soft:#A3A1D6;--line:#34316A;--btn:#EDEEFF;--btnink:#171630;--l0:#2C2A5A;--l1:#1F5A57;--l2:#238C79;--l3:#3CC3A0;--l4:#8CF0D0;--stage:#2A2858}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Nunito,system-ui,-apple-system,"Segoe UI",sans-serif;font-weight:500;line-height:1.5}
+main{max-width:720px;margin:0 auto;padding:24px 16px 40px}
+h1{font-family:"Press Start 2P",ui-monospace,monospace;font-size:20px;margin:0 0 6px}
+.sub{margin:0 0 18px;color:var(--soft)}
+.card{background:var(--card);border:2px solid var(--line);border-radius:18px;padding:18px;margin-bottom:16px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+input{font:inherit;padding:10px 12px;border-radius:12px;border:2px solid var(--line);background:var(--bg);color:var(--ink);min-width:0;flex:1 1 160px}
+input:focus-visible,button:focus-visible{outline:3px solid var(--l3);outline-offset:2px}
+button{font:inherit;font-weight:800;border:2px solid var(--btn);background:var(--btn);color:var(--btnink);border-radius:12px;padding:10px 16px;cursor:pointer}
+button.alt{background:transparent;color:var(--ink)}
+details{margin-top:10px;color:var(--soft);font-size:14px}
+summary{cursor:pointer;font-weight:700}
+.msg{margin:10px 0 0;font-size:14px;color:var(--soft);min-height:20px}
+.top{display:grid;grid-template-columns:200px 1fr;gap:20px;align-items:center}
+.stage{background:var(--stage);border-radius:14px;padding:14px;display:flex;align-items:flex-end;justify-content:center;min-height:200px;overflow:hidden}
+#pet{cursor:pointer;width:150px;height:auto;animation:hop var(--spd,1.2s) steps(2,end) infinite;transform-origin:bottom}
+@keyframes hop{0%{transform:translateY(0)}50%{transform:translateY(-6px)}100%{transform:translateY(0)}}
+@media (prefers-reduced-motion:reduce){#pet{animation:none}}
+.name{font-family:"Press Start 2P",ui-monospace,monospace;font-size:13px;margin:0 0 10px;line-height:1.6}
+.say{margin:0 0 14px;font-weight:700;font-size:17px}
+.bar{height:14px;background:var(--l0);border-radius:8px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--l3);transition:width .4s}
+.meta{display:flex;justify-content:space-between;color:var(--soft);font-size:14px;margin:6px 0 14px;gap:8px}
+.stats{display:flex;gap:20px;flex-wrap:wrap;font-size:14px;color:var(--soft)}
+.stats b{display:block;font-size:22px;color:var(--ink);line-height:1.1}
+h2{font-size:16px;margin:0 0 12px}
+.quest{display:flex;justify-content:space-between;gap:12px;font-weight:700;margin-bottom:8px}
+.heat{display:grid;grid-template-rows:repeat(7,1fr);grid-auto-flow:column;grid-auto-columns:1fr;gap:3px;margin-top:6px}
+.heat i{aspect-ratio:1;border-radius:3px;background:var(--l0)}
+.heat i.today{outline:2px solid var(--ink);outline-offset:1px}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chips span{padding:4px 12px;border-radius:999px;border:2px solid var(--line);color:var(--soft);font-size:13px}
+.chips span.on{border-color:var(--l3);color:var(--ink);font-weight:800}
+.heart{position:absolute;pointer-events:none;font-size:20px;animation:up .9s ease-out forwards}
+@keyframes up{to{transform:translateY(-60px);opacity:0}}
+.stage{position:relative}
+.evo{min-height:24px;margin:0 0 12px;font-weight:800}
+@media (max-width:520px){.top{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main>
+  <h1>Bit</h1>
+  <p class="sub">A pixel pet that grows from your Monkeytype grind.</p>
+
+  <section class="card" aria-label="Connect Monkeytype">
+    <div class="row">
+      <input id="user" placeholder="Monkeytype username" autocomplete="off" aria-label="Monkeytype username">
+      <button id="sync">Sync</button>
+      <button id="demo" class="alt">Demo mode</button>
+      <button id="reset" class="alt" aria-label="Reset all data">Reset</button>
+    </div>
+    <details>
+      <summary>Want the daily heatmap and quests? Add an ApeKey</summary>
+      <p>Public profiles only give totals. An ApeKey (Monkeytype settings, Ape Keys, with read access) lets Bit read your recent results. It stays in this browser only and never gets shared.</p>
+      <input id="ape" type="password" placeholder="ApeKey (optional)" autocomplete="off" aria-label="ApeKey">
+    </details>
+    <p class="msg" id="msg" aria-live="polite"></p>
+  </section>
+
+  <section class="card top" aria-label="Your pet">
+    <div class="stage"><svg id="pet" viewBox="0 0 12 13" shape-rendering="crispEdges" role="img" aria-label="Bit the pet"></svg></div>
+    <div>
+      <p class="name" id="stageName"></p>
+      <p class="say" id="say"></p>
+      <div class="bar" role="progressbar" aria-label="XP to next stage"><i id="fill"></i></div>
+      <div class="meta"><span id="xpTxt"></span><span id="nextTxt"></span></div>
+      <div class="stats">
+        <div><b id="streak">0</b>day streak</div>
+        <div><b id="best">0</b>best WPM</div>
+        <div><b id="tests">0</b>tests done</div>
+        <div><b id="mins">0</b>minutes typed</div>
+      </div>
+    </div>
+  </section>
+
+  <p class="evo" id="evo" aria-live="polite"></p>
+
+  <section class="card" aria-label="Daily quest">
+    <h2>Daily quest: finish 5 tests</h2>
+    <div class="quest"><span id="qTxt"></span><span id="qBonus"></span></div>
+    <div class="bar" role="progressbar" aria-label="Quest progress"><i id="qFill"></i></div>
+    <div class="row" id="demoActs" style="margin-top:14px;display:none">
+      <button id="t1">Finish a test</button>
+      <button id="t5" class="alt">Grind 5 tests</button>
+      <button id="next" class="alt">Next day</button>
+    </div>
+  </section>
+
+  <section class="card" aria-label="Activity">
+    <h2>Last 20 weeks</h2>
+    <div class="heat" id="heat"></div>
+    <p class="msg" id="heatNote"></p>
+  </section>
+
+  <section class="card" aria-label="Speed badges">
+    <h2>Speed badges</h2>
+    <div class="chips" id="badges"></div>
+  </section>
+</main>
+<script>
+const SPR=[
+["....oooo....","...obbbbo...","..obbbbbbo..","..obabbbbo..",".obbbbbabbo.",".obbbbbbbbo.",".obbabbbbbo.",".obbbbbbbbo.","..obbbbbbo..","...oooooo..."],
+["...oooooo...","..obbbbbbo..",".obbbbbbbbo.",".obeebbeebo.",".obbbbbbbbo.",".obcbmmbcbo.",".obbbbbbbbo.","..obbbbbbo..","...oooooo..."],
+["..oo....oo..",".obbo..obbo.",".obbbbbbbbo.",".obbbbbbbbo.",".obeebbeebo.",".obbbbbbbbo.",".obcbmmbcbo.",".obbbllbbbo.","..obbbbbbo..","...oooooo..."],
+["..oo....oo..",".obbo..obbo.",".obbbbbbbbo.",".obbbbbbbbo.",".obeebbeebo.",".obbbbbbbbo.","obcbbmmbbcbo","obbbbllbbbbo",".obbbllbbbo.","..obbbbbbo..","..ooo..ooo.."],
+["....a..a....","....aaaa....","..oo....oo..",".obbo..obbo.",".obbbbbbbbo.",".obeebbeebo.",".obbbbbbbbo.","obcbbmmbbcbo","obbbbllbbbbo",".obbbllbbbo.","..obbbbbbo..","..ooo..ooo.."]];
+const ST=[{n:"Egg",xp:0,c:"#FFF0D9"},{n:"Hatchling",xp:100,c:"#8FE3C2"},{n:"Kiddo",xp:500,c:"#FFB3C7"},{n:"Teen",xp:1500,c:"#FFA97A"},{n:"Legend",xp:4000,c:"#B9A0FF"}];
+const WPMS=[40,60,80,100,120];
+const KEY="bit-typing-pet-v1",N=140,Q=5;
+const $=id=>document.getElementById(id);
+const dk=d=>d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
+let S={mode:"none",user:"",tests:0,secs:0,best:0,streakP:0,days:Array(N).fill(0),hasDays:false,lastGap:99};
+try{const x=JSON.parse(localStorage.getItem(KEY));if(x&&x.days&&x.days.length===N)S=x}catch(e){}
+try{$("ape").value=localStorage.getItem(KEY+"-ape")||""}catch(e){}
+$("user").value=S.user||"";
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+const bonusXp=()=>S.hasDays?S.days.filter(n=>n>=Q).length*20:0;
+const xpOf=()=>S.tests+Math.round(S.secs/60)+bonusXp();
+const stageOf=xp=>{let s=0;ST.forEach((t,i)=>{if(xp>=t.xp)s=i});return s};
+function streak(){
+  if(S.hasDays){const d=S.days;let i=N-1;if(d[i]===0)i--;let n=0;while(i>=0&&d[i]>0){n++;i--}return n}
+  return S.streakP||0;
+}
+function gap(){
+  if(S.hasDays){for(let i=N-1;i>=0;i--)if(S.days[i]>0)return N-1-i;return 99}
+  return S.streakP>0?0:2;
+}
+function draw(idx){
+  const P={o:"#4A2B55",b:ST[idx].c,l:"#fff",a:idx===0?"#FFB3C7":"#FFC93C",e:"#2A2450",c:"#FF7A9C",m:"#4A2B55"};
+  const rows=SPR[idx],y0=13-rows.length;let h="";
+  rows.forEach((r,y)=>[...r].forEach((ch,x)=>{if(ch!==".")h+=`<rect x="${x}" y="${y+y0}" width="1" height="1" fill="${P[ch]}"${ch==="l"?' fill-opacity=".55"':""}/>`}));
+  $("pet").innerHTML=h;
+}
+const lvl=n=>n===0?0:n<3?1:n<6?2:n<10?3:4;
+function render(){
+  const xp=xpOf(),idx=stageOf(xp),t=ST[idx],nx=ST[idx+1];
+  draw(idx);
+  $("stageName").textContent=t.n;
+  const g=gap(),today=S.days[N-1];
+  let line,spd,fl="none";
+  if(S.mode==="none"){line="Hi! Sync your Monkeytype username or try demo mode.";spd="1.4s"}
+  else if(g===0){line="That keyboard sounds good. Keep typing!";spd="0.7s"}
+  else if(g===1){line="Quiet today. One quick test?";spd="1.2s"}
+  else if(g<=3){line="My fingers are cold. Feed me a test?";spd="1.8s"}
+  else{line="zzz... wake me up with a test.";spd="3s";fl="grayscale(.6)"}
+  $("say").textContent=line;
+  $("pet").style.setProperty("--spd",spd);$("pet").style.filter=fl;
+  const lo=t.xp;
+  $("fill").style.width=(nx?Math.min(100,(xp-lo)/(nx.xp-lo)*100):100)+"%";
+  $("xpTxt").textContent=xp+" XP";
+  $("nextTxt").textContent=nx?(nx.xp-xp)+" XP to "+nx.n:"Max level";
+  $("streak").textContent=streak();$("best").textContent=Math.round(S.best);
+  $("tests").textContent=S.tests;$("mins").textContent=Math.round(S.secs/60);
+  const canQ=S.hasDays;
+  $("qTxt").textContent=canQ?Math.min(today,Q)+" / "+Q+" tests today":"Needs demo mode or an ApeKey";
+  $("qBonus").textContent=canQ&&today>=Q?"Done, +20 XP":"";
+  $("qFill").style.width=(canQ?Math.min(100,today/Q*100):0)+"%";
+  $("demoActs").style.display=S.mode==="demo"?"flex":"none";
+  $("heat").innerHTML=S.days.map((n,i)=>`<i class="${i===N-1?"today":""}" style="background:var(--l${lvl(n)})" title="${n} test${n===1?"":"s"}"></i>`).join("");
+  $("heatNote").textContent=S.hasDays?"":"No daily data yet. Add an ApeKey or use demo mode.";
+  $("badges").innerHTML=WPMS.map(w=>`<span class="${S.best>=w?"on":""}">${w} WPM</span>`).join("");
+  save();
+}
+function bigger(before){const a=stageOf(xpOf());$("evo").textContent=a>before?"Bit evolved into "+ST[a].n+"!":""}
+function bestWpm(o){let m=0;(function w(x){if(x&&typeof x==="object"){if(typeof x.wpm==="number")m=Math.max(m,x.wpm);Object.values(x).forEach(w)}})(o);return m}
+async function sync(){
+  const u=$("user").value.trim();
+  if(!u){$("msg").textContent="Type your Monkeytype username first.";return}
+  $("msg").textContent="Syncing...";
+  const before=stageOf(xpOf());
+  try{
+    const r=await fetch("https://api.monkeytype.com/users/"+encodeURIComponent(u)+"/profile");
+    if(!r.ok)throw new Error(r.status===404?"user not found":"HTTP "+r.status);
+    const d=(await r.json()).data||{};
+    const ts=d.typingStats||{};
+    const sk=d.streak;
+    S={mode:"live",user:u,tests:ts.completedTests||0,secs:ts.timeTyping||0,best:bestWpm(d.personalBests),streakP:typeof sk==="number"?sk:(sk&&sk.length)||0,days:Array(N).fill(0),hasDays:false,lastGap:99};
+    const key=$("ape").value.trim();
+    if(key){
+      try{localStorage.setItem(KEY+"-ape",key)}catch(e){}
+      const rr=await fetch("https://api.monkeytype.com/results",{headers:{Authorization:"ApeKey "+key}});
+      if(!rr.ok)throw new Error("ApeKey rejected (HTTP "+rr.status+")");
+      const res=(await rr.json()).data||[];
+      const map={};res.forEach(x=>{const k=dk(new Date(x.timestamp));map[k]=(map[k]||0)+1});
+      const now=new Date();
+      for(let i=0;i<N;i++){const dt=new Date(now);dt.setDate(now.getDate()-(N-1-i));S.days[i]=map[dk(dt)]||0}
+      S.hasDays=true;
+    }
+    $("msg").textContent="Synced "+u+"."+(key?"":" Add an ApeKey for the heatmap.");
+    bigger(before);
+  }catch(e){
+    $("msg").textContent="Sync failed: "+e.message+". Check the username, or open this page from your own site instead of a preview.";
+  }
+  render();
+}
+function demoDays(){
+  const d=[];for(let i=0;i<N;i++)d.push(i>=N-42&&Math.random()<.5?1+Math.floor(Math.random()*8):0);d[N-1]=0;return d;
+}
+function startDemo(){
+  const d=demoDays(),t=d.reduce((a,b)=>a+b,0);
+  S={mode:"demo",user:"",tests:t,secs:t*45,best:62,streakP:0,days:d,hasDays:true,lastGap:99};
+  $("msg").textContent="Demo mode: fake tests, real pet logic.";
+  $("evo").textContent="";render();
+}
+function addTests(n){
+  const before=stageOf(xpOf());
+  S.days[N-1]+=n;S.tests+=n;S.secs+=n*45;
+  S.best=Math.max(S.best,50+Math.random()*50);
+  bigger(before);render();
+}
+$("pet").onclick=e=>{
+  const h=document.createElement("span");h.className="heart";h.textContent="♥";
+  h.style.left=(e.offsetX+e.target.getBoundingClientRect().left-$("pet").parentNode.getBoundingClientRect().left)+"px";
+  h.style.bottom="90px";$("pet").parentNode.appendChild(h);setTimeout(()=>h.remove(),900);
+  $("say").textContent=["Hehe, that tickles!","Do it again.","Ok, now go type.","Love you. Now type."][Math.floor(Math.random()*4)];
+};
+$("reset").onclick=()=>{if(!confirm("Wipe Bit's progress?"))return;try{localStorage.removeItem(KEY);localStorage.removeItem(KEY+"-ape")}catch(e){}location.reload()};
+$("sync").onclick=sync;
+$("user").addEventListener("keydown",e=>{if(e.key==="Enter")sync()});
+$("demo").onclick=startDemo;
+$("t1").onclick=()=>addTests(1);
+$("t5").onclick=()=>addTests(5);
+$("next").onclick=()=>{S.days.shift();S.days.push(0);$("evo").textContent="";render()};
+render();
+if(S.mode==="live"&&S.user)sync();
+</script>
+</body>
+</html>
