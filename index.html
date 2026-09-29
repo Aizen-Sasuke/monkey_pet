@@ -7,55 +7,92 @@
 <meta name="description" content="A pixel pet that grows from your Monkeytype grind.">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800&family=Press+Start+2P&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#E8EBFF;--card:#F7F8FF;--ink:#26234F;--soft:#6B68A0;--line:#CDD1F5;--btn:#26234F;--btnink:#F7F8FF;--l0:#DADFFA;--l1:#BDEBDD;--l2:#7ED8BC;--l3:#33B99A;--l4:#0E8A73;--stage:#DDE1FF;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#171630;--card:#211F45;--ink:#EDEEFF;--soft:#A3A1D6;--line:#34316A;--btn:#EDEEFF;--btnink:#171630;--l0:#2C2A5A;--l1:#1F5A57;--l2:#238C79;--l3:#3CC3A0;--l4:#8CF0D0;--stage:#2A2858}}
-:root[data-theme="dark"]{--bg:#171630;--card:#211F45;--ink:#EDEEFF;--soft:#A3A1D6;--line:#34316A;--btn:#EDEEFF;--btnink:#171630;--l0:#2C2A5A;--l1:#1F5A57;--l2:#238C79;--l3:#3CC3A0;--l4:#8CF0D0;--stage:#2A2858}
+:root{--bg:#E8EBFF;--card:#F7F8FFCC;--ink:#26234F;--soft:#6B68A0;--line:#CDD1F5;--btn:#26234F;--btnink:#F7F8FF;--l0:#DADFFA;--l1:#BDEBDD;--l2:#7ED8BC;--l3:#33B99A;--l4:#0E8A73;--stage:#DDE1FF;--b1:#C9B8FF99;--b2:#9FF0D899;--b3:#FFC2DA99;--pc:#8FE3C2;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121127;--card:#211F45CC;--ink:#EDEEFF;--soft:#A3A1D6;--line:#34316A;--btn:#EDEEFF;--btnink:#171630;--l0:#2C2A5A;--l1:#1F5A57;--l2:#238C79;--l3:#3CC3A0;--l4:#8CF0D0;--stage:#2A2858;--b1:#5B3FD066;--b2:#12A58A55;--b3:#C2418A44}}
+:root[data-theme="dark"]{--bg:#121127;--card:#211F45CC;--ink:#EDEEFF;--soft:#A3A1D6;--line:#34316A;--btn:#EDEEFF;--btnink:#171630;--l0:#2C2A5A;--l1:#1F5A57;--l2:#238C79;--l3:#3CC3A0;--l4:#8CF0D0;--stage:#2A2858;--b1:#5B3FD066;--b2:#12A58A55;--b3:#C2418A44}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:Nunito,system-ui,-apple-system,"Segoe UI",sans-serif;font-weight:500;line-height:1.5}
-main{max-width:720px;margin:0 auto;padding:24px 16px 40px}
-h1{font-family:"Press Start 2P",ui-monospace,monospace;font-size:20px;margin:0 0 6px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Nunito,system-ui,-apple-system,"Segoe UI",sans-serif;font-weight:500;line-height:1.5;transition:background .4s}
+body::before{content:"";position:fixed;inset:-20%;z-index:-2;filter:blur(30px);background:radial-gradient(40% 40% at 20% 20%,var(--b1),transparent 70%),radial-gradient(35% 35% at 80% 30%,var(--b2),transparent 70%),radial-gradient(45% 45% at 50% 90%,var(--b3),transparent 70%);animation:drift 22s ease-in-out infinite alternate}
+@keyframes drift{to{transform:translate(4%,-3%) rotate(6deg) scale(1.1)}}
+#fx{position:fixed;inset:0;z-index:-1;pointer-events:none}
+main{max-width:760px;margin:0 auto;padding:24px 16px 40px}
+header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+h1{font-family:"Press Start 2P",ui-monospace,monospace;font-size:24px;margin:0 0 8px;background:linear-gradient(90deg,var(--l3),var(--pc),#FF7A9C);-webkit-background-clip:text;background-clip:text;color:transparent}
+h1::after{content:"_";animation:cur 1s steps(1) infinite}
+@keyframes cur{50%{opacity:0}}
 .sub{margin:0 0 18px;color:var(--soft)}
-.card{background:var(--card);border:2px solid var(--line);border-radius:18px;padding:18px;margin-bottom:16px}
+#theme{width:42px;height:42px;padding:0;border-radius:50%;font-size:18px}
+.card{background:var(--card);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1.5px solid var(--line);border-radius:22px;padding:18px;margin-bottom:16px;box-shadow:0 14px 34px -18px rgba(38,35,79,.45);animation:up2 .6s backwards;animation-delay:var(--d,0s)}
+@keyframes up2{from{opacity:0;transform:translateY(14px)}}
 .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
 input{font:inherit;padding:10px 12px;border-radius:12px;border:2px solid var(--line);background:var(--bg);color:var(--ink);min-width:0;flex:1 1 160px}
 input:focus-visible,button:focus-visible{outline:3px solid var(--l3);outline-offset:2px}
-button{font:inherit;font-weight:800;border:2px solid var(--btn);background:var(--btn);color:var(--btnink);border-radius:12px;padding:10px 16px;cursor:pointer}
+button{font:inherit;font-weight:800;border:2px solid var(--btn);background:var(--btn);color:var(--btnink);border-radius:12px;padding:10px 16px;cursor:pointer;transition:transform .15s,box-shadow .15s}
+button:hover{transform:translateY(-2px);box-shadow:0 6px 14px -6px var(--pc)}
+button:active{transform:scale(.96)}
 button.alt{background:transparent;color:var(--ink)}
 details{margin-top:10px;color:var(--soft);font-size:14px}
 summary{cursor:pointer;font-weight:700}
 .msg{margin:10px 0 0;font-size:14px;color:var(--soft);min-height:20px}
-.top{display:grid;grid-template-columns:200px 1fr;gap:20px;align-items:center}
-.stage{background:var(--stage);border-radius:14px;padding:14px;display:flex;align-items:flex-end;justify-content:center;min-height:200px;overflow:hidden}
-#pet{cursor:pointer;width:150px;height:auto;animation:hop var(--spd,1.2s) steps(2,end) infinite;transform-origin:bottom}
-@keyframes hop{0%{transform:translateY(0)}50%{transform:translateY(-6px)}100%{transform:translateY(0)}}
-@media (prefers-reduced-motion:reduce){#pet{animation:none}}
-.name{font-family:"Press Start 2P",ui-monospace,monospace;font-size:13px;margin:0 0 10px;line-height:1.6}
-.say{margin:0 0 14px;font-weight:700;font-size:17px}
+.top{display:grid;grid-template-columns:280px 1fr;gap:20px;align-items:center}
+.stage{position:relative;background:var(--stage);border-radius:18px;min-height:230px;overflow:hidden}
+.aura{position:absolute;left:50%;top:50%;width:200px;height:200px;margin:-100px 0 0 -100px;border-radius:50%;background:radial-gradient(circle,var(--pc),transparent 68%);opacity:.5;filter:blur(18px);animation:pulse 3s ease-in-out infinite}
+@keyframes pulse{50%{transform:scale(1.15);opacity:.75}}
+.sleep .aura{opacity:.12;animation:none}
+.floor{position:absolute;left:0;right:0;bottom:0;height:26px;background:linear-gradient(transparent,rgba(120,110,200,.28))}
+.pw{position:absolute;bottom:22px;left:50%;width:130px;transform:translateX(-50%);transition:left 2.6s ease-in-out}
+.pf{transform:scaleX(var(--dir,1))}
+.boop{animation:boop .35s}
+@keyframes boop{40%{transform:scale(calc(var(--dir,1)*1.22),.78)}}
+#pet{display:block;width:130px;height:auto;cursor:pointer;animation:hop var(--spd,1.2s) steps(2,end) infinite;transform-origin:bottom;filter:drop-shadow(0 0 6px var(--pc))}
+@keyframes hop{50%{transform:translateY(-6px)}}
+.eye{transform:translate(calc(var(--lx,0)*1px),calc(var(--ly,0)*1px)) scaleY(var(--bl,1));transform-box:fill-box;transform-origin:center;transition:transform .08s}
+.sh{width:70%;height:9px;border-radius:50%;background:rgba(0,0,0,.2);margin:3px auto 0;filter:blur(2px)}
+.zz{display:none;position:absolute;top:-6px;right:-2px;font-family:"Press Start 2P",monospace;font-size:12px;color:var(--soft);animation:zz 2s ease-in-out infinite}
+.sleep .zz{display:block}
+@keyframes zz{0%{transform:translate(0,8px);opacity:0}50%{opacity:1}100%{transform:translate(12px,-16px);opacity:0}}
+.name{font-family:"Press Start 2P",ui-monospace,monospace;font-size:13px;margin:0 0 8px;line-height:1.6}
+.track{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 12px}
+.track span{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:800;color:var(--soft);opacity:.55}
+.track span.on{opacity:1;color:var(--ink)}
+.track i{width:10px;height:10px;border-radius:3px;background:var(--c);border:2px solid var(--line)}
+.say{margin:0 0 14px;font-weight:700;font-size:17px;min-height:52px}
 .bar{height:14px;background:var(--l0);border-radius:8px;overflow:hidden}
-.bar i{display:block;height:100%;width:0;background:var(--l3);transition:width .4s}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--l3),var(--pc),var(--l3));background-size:200% 100%;animation:shine 2.4s linear infinite;transition:width .6s cubic-bezier(.3,1.4,.5,1)}
+@keyframes shine{to{background-position:-200% 0}}
 .meta{display:flex;justify-content:space-between;color:var(--soft);font-size:14px;margin:6px 0 14px;gap:8px}
 .stats{display:flex;gap:20px;flex-wrap:wrap;font-size:14px;color:var(--soft)}
 .stats b{display:block;font-size:22px;color:var(--ink);line-height:1.1}
 h2{font-size:16px;margin:0 0 12px}
 .quest{display:flex;justify-content:space-between;gap:12px;font-weight:700;margin-bottom:8px}
 .heat{display:grid;grid-template-rows:repeat(7,1fr);grid-auto-flow:column;grid-auto-columns:1fr;gap:3px;margin-top:6px}
-.heat i{aspect-ratio:1;border-radius:3px;background:var(--l0)}
+.heat i{aspect-ratio:1;border-radius:3px;background:var(--l0);transition:transform .15s}
+.heat i:hover{transform:scale(1.5);z-index:1}
+.heat.in i{animation:pop .4s backwards;animation-delay:calc(var(--i)*4ms)}
+@keyframes pop{from{transform:scale(0);opacity:0}}
 .heat i.today{outline:2px solid var(--ink);outline-offset:1px}
 .chips{display:flex;gap:8px;flex-wrap:wrap}
 .chips span{padding:4px 12px;border-radius:999px;border:2px solid var(--line);color:var(--soft);font-size:13px}
-.chips span.on{border-color:var(--l3);color:var(--ink);font-weight:800}
-.heart{position:absolute;pointer-events:none;font-size:20px;animation:up .9s ease-out forwards}
-@keyframes up{to{transform:translateY(-60px);opacity:0}}
-.stage{position:relative}
-.evo{min-height:24px;margin:0 0 12px;font-weight:800}
-@media (max-width:520px){.top{grid-template-columns:1fr}}
+.chips span.on{border-color:var(--l3);color:var(--ink);font-weight:800;box-shadow:0 0 12px -2px var(--l3)}
+.evo{margin:0 0 16px}
+.evo:not(:empty){padding:12px 16px;border-radius:16px;background:linear-gradient(90deg,var(--l3),var(--pc));color:#171630;text-align:center;font-weight:800;animation:pop .5s}
+.prompt{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:18px;line-height:1.9;margin-bottom:12px;cursor:text}
+.prompt span{border-radius:3px}
+.prompt .ok{color:var(--l3)}
+.prompt .bad{color:#fff;background:#FF5C7A}
+.prompt .cur{background:var(--l1);animation:cur 1s steps(1) infinite}
+@media (max-width:560px){.top{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
+<canvas id="fx"></canvas>
 <main>
-  <h1>Bit</h1>
-  <p class="sub">A pixel pet that grows from your Monkeytype grind.</p>
+  <header>
+    <div><h1>Bit</h1><p class="sub">A pixel pet that grows from your Monkeytype grind.</p></div>
+    <button id="theme" class="alt" aria-label="Toggle theme">◐</button>
+  </header>
 
   <section class="card" aria-label="Connect Monkeytype">
     <div class="row">
@@ -72,10 +109,15 @@ h2{font-size:16px;margin:0 0 12px}
     <p class="msg" id="msg" aria-live="polite"></p>
   </section>
 
-  <section class="card top" aria-label="Your pet">
-    <div class="stage"><svg id="pet" viewBox="0 0 12 13" shape-rendering="crispEdges" role="img" aria-label="Bit the pet"></svg></div>
+  <section class="card top" aria-label="Your pet" style="--d:.1s">
+    <div class="stage" id="stage">
+      <div class="aura"></div>
+      <div class="pw" id="pw"><b class="zz">Z</b><div class="pf"><svg id="pet" viewBox="0 0 12 13" shape-rendering="crispEdges" role="img" aria-label="Bit the pet"></svg></div><div class="sh"></div></div>
+      <div class="floor"></div>
+    </div>
     <div>
       <p class="name" id="stageName"></p>
+      <div class="track" id="track"></div>
       <p class="say" id="say"></p>
       <div class="bar" role="progressbar" aria-label="XP to next stage"><i id="fill"></i></div>
       <div class="meta"><span id="xpTxt"></span><span id="nextTxt"></span></div>
@@ -90,7 +132,17 @@ h2{font-size:16px;margin:0 0 12px}
 
   <p class="evo" id="evo" aria-live="polite"></p>
 
-  <section class="card" aria-label="Daily quest">
+  <section class="card" aria-label="Feed Bit" style="--d:.2s">
+    <h2>Feed Bit: type it out</h2>
+    <div class="prompt" id="prompt"></div>
+    <div class="row">
+      <input id="ti" placeholder="Start typing to feed Bit" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Typing test">
+      <button id="shuf" class="alt">Shuffle</button>
+    </div>
+    <p class="msg" id="tmsg" aria-live="polite">Finish the line for a test, XP and a WPM record.</p>
+  </section>
+
+  <section class="card" aria-label="Daily quest" style="--d:.3s">
     <h2>Daily quest: finish 5 tests</h2>
     <div class="quest"><span id="qTxt"></span><span id="qBonus"></span></div>
     <div class="bar" role="progressbar" aria-label="Quest progress"><i id="qFill"></i></div>
@@ -101,13 +153,13 @@ h2{font-size:16px;margin:0 0 12px}
     </div>
   </section>
 
-  <section class="card" aria-label="Activity">
+  <section class="card" aria-label="Activity" style="--d:.4s">
     <h2>Last 20 weeks</h2>
-    <div class="heat" id="heat"></div>
+    <div class="heat in" id="heat"></div>
     <p class="msg" id="heatNote"></p>
   </section>
 
-  <section class="card" aria-label="Speed badges">
+  <section class="card" aria-label="Speed badges" style="--d:.5s">
     <h2>Speed badges</h2>
     <div class="chips" id="badges"></div>
   </section>
@@ -121,14 +173,36 @@ const SPR=[
 ["....a..a....","....aaaa....","..oo....oo..",".obbo..obbo.",".obbbbbbbbo.",".obeebbeebo.",".obbbbbbbbo.","obcbbmmbbcbo","obbbbllbbbbo",".obbbllbbbo.","..obbbbbbo..","..ooo..ooo.."]];
 const ST=[{n:"Egg",xp:0,c:"#FFF0D9"},{n:"Hatchling",xp:100,c:"#8FE3C2"},{n:"Kiddo",xp:500,c:"#FFB3C7"},{n:"Teen",xp:1500,c:"#FFA97A"},{n:"Legend",xp:4000,c:"#B9A0FF"}];
 const WPMS=[40,60,80,100,120];
+const WD="the of code type pet bit key fast flow grind swift pixel brain focus quest level streak speed nova cloud spark drift moon glow rush hatch grow chase blaze dream sharp clean loopray zen echo wave".split(" ");
 const KEY="bit-typing-pet-v1",N=140,Q=5;
-const $=id=>document.getElementById(id);
+const $=id=>document.getElementById(id),R=document.documentElement;
 const dk=d=>d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
 let S={mode:"none",user:"",tests:0,secs:0,best:0,streakP:0,days:Array(N).fill(0),hasDays:false,lastGap:99};
 try{const x=JSON.parse(localStorage.getItem(KEY));if(x&&x.days&&x.days.length===N)S=x}catch(e){}
-try{$("ape").value=localStorage.getItem(KEY+"-ape")||""}catch(e){}
+try{$("ape").value=localStorage.getItem(KEY+"-ape")||"";const th=localStorage.getItem(KEY+"-th");if(th)R.dataset.theme=th}catch(e){}
 $("user").value=S.user||"";
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+
+/* ---------- fx: ambient fireflies + bursts ---------- */
+const cv=$("fx"),cx=cv.getContext("2d"),RM=matchMedia("(prefers-reduced-motion:reduce)").matches;
+let W_,H_,PC="#8FE3C2",BP=[],tk=0;
+const rs=()=>{W_=cv.width=innerWidth;H_=cv.height=innerHeight};addEventListener("resize",rs);rs();
+const AM=Array.from({length:RM?0:42},()=>({x:Math.random()*W_,y:Math.random()*H_,vy:.1+Math.random()*.3,s:1+Math.random()*2.5,ph:Math.random()*6}));
+function burst(x,y,n,g,cols){for(let i=0;i<n;i++){const a=Math.random()*6.28,v=1+Math.random()*4;BP.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v-2,l:1,d:.012+Math.random()*.01,s:3+Math.random()*4,g,c:cols[i%cols.length]})}}
+function loop(){
+  tk+=.02;cx.clearRect(0,0,W_,H_);cx.fillStyle=PC;
+  AM.forEach(p=>{p.y-=p.vy;p.x+=Math.sin(tk+p.ph)*.3;if(p.y<-10){p.y=H_+10;p.x=Math.random()*W_}cx.globalAlpha=.25+.25*Math.sin(tk*2+p.ph);cx.beginPath();cx.arc(p.x,p.y,p.s,0,6.28);cx.fill()});
+  BP=BP.filter(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=.08;p.l-=p.d;if(p.l<=0)return false;cx.globalAlpha=p.l;cx.fillStyle=p.c;
+    if(p.g){cx.font=p.s*4+"px sans-serif";cx.fillText(p.g,p.x,p.y)}else cx.fillRect(p.x,p.y,p.s,p.s);return true});
+  cx.globalAlpha=1;requestAnimationFrame(loop);
+}
+loop();
+let AC;function sfx(f,d=.1){try{AC=AC||new AudioContext();const o=AC.createOscillator(),g=AC.createGain(),t=AC.currentTime;o.type="square";o.frequency.value=f;g.gain.setValueAtTime(.04,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(AC.destination);o.start();o.stop(t+d)}catch(e){}}
+function num(id,v){const e=$(id),a=+e.dataset.v||0;e.dataset.v=v;const t0=performance.now();(function f(t){const p=Math.min(1,(t-t0)/500);e.textContent=Math.round(a+(v-a)*p);if(p<1)requestAnimationFrame(f)})(t0)}
+let sayT,lastLine;
+function say(t){clearInterval(sayT);const e=$("say");let i=0;e.textContent="";sayT=setInterval(()=>{e.textContent=t.slice(0,++i);if(i>=t.length)clearInterval(sayT)},20)}
+
+/* ---------- pet logic (same rules as before) ---------- */
 const bonusXp=()=>S.hasDays?S.days.filter(n=>n>=Q).length*20:0;
 const xpOf=()=>S.tests+Math.round(S.secs/60)+bonusXp();
 const stageOf=xp=>{let s=0;ST.forEach((t,i)=>{if(xp>=t.xp)s=i});return s};
@@ -143,40 +217,51 @@ function gap(){
 function draw(idx){
   const P={o:"#4A2B55",b:ST[idx].c,l:"#fff",a:idx===0?"#FFB3C7":"#FFC93C",e:"#2A2450",c:"#FF7A9C",m:"#4A2B55"};
   const rows=SPR[idx],y0=13-rows.length;let h="";
-  rows.forEach((r,y)=>[...r].forEach((ch,x)=>{if(ch!==".")h+=`<rect x="${x}" y="${y+y0}" width="1" height="1" fill="${P[ch]}"${ch==="l"?' fill-opacity=".55"':""}/>`}));
+  rows.forEach((r,y)=>[...r].forEach((ch,x)=>{if(ch!==".")h+=`<rect x="${x}" y="${y+y0}" width="1" height="1" fill="${P[ch]}"${ch==="l"?' fill-opacity=".55"':""}${ch==="e"?' class="eye"':""}/>`}));
   $("pet").innerHTML=h;
 }
 const lvl=n=>n===0?0:n<3?1:n<6?2:n<10?3:4;
+let firstHeat=true;
 function render(){
   const xp=xpOf(),idx=stageOf(xp),t=ST[idx],nx=ST[idx+1];
-  draw(idx);
+  draw(idx);PC=t.c;R.style.setProperty("--pc",t.c);
   $("stageName").textContent=t.n;
-  const g=gap(),today=S.days[N-1];
-  let line,spd,fl="none";
-  if(S.mode==="none"){line="Hi! Sync your Monkeytype username or try demo mode.";spd="1.4s"}
+  $("track").innerHTML=ST.map((s,i)=>`<span class="${i<=idx?"on":""}" style="--c:${s.c}"><i></i>${s.n}</span>`).join("");
+  const g=gap(),today=S.days[N-1],sl=g>3;
+  let line,spd;
+  if(S.mode==="none"){line="Hi! Sync your Monkeytype username, try demo mode, or just feed me below.";spd="1.4s"}
   else if(g===0){line="That keyboard sounds good. Keep typing!";spd="0.7s"}
   else if(g===1){line="Quiet today. One quick test?";spd="1.2s"}
   else if(g<=3){line="My fingers are cold. Feed me a test?";spd="1.8s"}
-  else{line="zzz... wake me up with a test.";spd="3s";fl="grayscale(.6)"}
-  $("say").textContent=line;
-  $("pet").style.setProperty("--spd",spd);$("pet").style.filter=fl;
+  else{line="zzz... wake me up with a test.";spd="3s"}
+  if(line!==lastLine){lastLine=line;say(line)}
+  $("stage").classList.toggle("sleep",sl);
+  const p=$("pet");p.style.setProperty("--spd",spd);p.style.filter=sl?"grayscale(.6)":"";p.style.setProperty("--bl",sl?.12:1);
   const lo=t.xp;
   $("fill").style.width=(nx?Math.min(100,(xp-lo)/(nx.xp-lo)*100):100)+"%";
   $("xpTxt").textContent=xp+" XP";
   $("nextTxt").textContent=nx?(nx.xp-xp)+" XP to "+nx.n:"Max level";
-  $("streak").textContent=streak();$("best").textContent=Math.round(S.best);
-  $("tests").textContent=S.tests;$("mins").textContent=Math.round(S.secs/60);
+  num("streak",streak());num("best",Math.round(S.best));num("tests",S.tests);num("mins",Math.round(S.secs/60));
   const canQ=S.hasDays;
   $("qTxt").textContent=canQ?Math.min(today,Q)+" / "+Q+" tests today":"Needs demo mode or an ApeKey";
   $("qBonus").textContent=canQ&&today>=Q?"Done, +20 XP":"";
   $("qFill").style.width=(canQ?Math.min(100,today/Q*100):0)+"%";
   $("demoActs").style.display=S.mode==="demo"?"flex":"none";
-  $("heat").innerHTML=S.days.map((n,i)=>`<i class="${i===N-1?"today":""}" style="background:var(--l${lvl(n)})" title="${n} test${n===1?"":"s"}"></i>`).join("");
+  $("heat").className="heat"+(firstHeat?" in":"");firstHeat=false;
+  $("heat").innerHTML=S.days.map((n,i)=>`<i class="${i===N-1?"today":""}" style="--i:${i};background:var(--l${lvl(n)})" title="${n} test${n===1?"":"s"}"></i>`).join("");
   $("heatNote").textContent=S.hasDays?"":"No daily data yet. Add an ApeKey or use demo mode.";
-  $("badges").innerHTML=WPMS.map(w=>`<span class="${S.best>=w?"on":""}">${w} WPM</span>`).join("");
+  $("badges").innerHTML=WPMS.map(w=>`<span class="${S.best>=w?"on":""}">${S.best>=w?"⚡ ":""}${w} WPM</span>`).join("");
   save();
 }
-function bigger(before){const a=stageOf(xpOf());$("evo").textContent=a>before?"Bit evolved into "+ST[a].n+"!":""}
+function bigger(before){
+  const a=stageOf(xpOf());
+  if(a>before){
+    $("evo").textContent="Bit evolved into "+ST[a].n+"!";
+    const r=$("pet").getBoundingClientRect();
+    [0,250,500].forEach(d=>setTimeout(()=>burst(r.left+r.width/2,r.top+r.height/2,50,0,[ST[a].c,"#FFC93C","#FF7A9C","#7ED8BC"]),d));
+    [523,659,784,1047].forEach((f,i)=>setTimeout(()=>sfx(f,.18),i*110));
+  }else $("evo").textContent="";
+}
 function bestWpm(o){let m=0;(function w(x){if(x&&typeof x==="object"){if(typeof x.wpm==="number")m=Math.max(m,x.wpm);Object.values(x).forEach(w)}})(o);return m}
 async function sync(){
   const u=$("user").value.trim();
@@ -215,19 +300,57 @@ function startDemo(){
   const d=demoDays(),t=d.reduce((a,b)=>a+b,0);
   S={mode:"demo",user:"",tests:t,secs:t*45,best:62,streakP:0,days:d,hasDays:true,lastGap:99};
   $("msg").textContent="Demo mode: fake tests, real pet logic.";
-  $("evo").textContent="";render();
+  $("evo").textContent="";firstHeat=true;render();
 }
-function addTests(n){
+function addTests(n,secs=n*45,wpm=50+Math.random()*50){
   const before=stageOf(xpOf());
-  S.days[N-1]+=n;S.tests+=n;S.secs+=n*45;
-  S.best=Math.max(S.best,50+Math.random()*50);
+  if(S.mode==="none"){S.mode="local";S.hasDays=true;$("msg").textContent="Local mode: Bit is living off the tests you type here."}
+  S.days[N-1]+=n;S.tests+=n;S.secs+=secs;
+  S.best=Math.max(S.best,wpm);
   bigger(before);render();
 }
+
+/* ---------- feed Bit: in-page typing test ---------- */
+let T;
+const rT=(v="")=>{$("prompt").innerHTML=[...T.txt].map((c,i)=>`<span class="${i<v.length?(v[i]===c?"ok":"bad"):i===v.length?"cur":""}">${c}</span>`).join("")};
+function newT(){T={txt:Array.from({length:9},()=>WD[Math.random()*WD.length|0]).join(" "),t0:0};$("ti").value="";rT()}
+$("ti").oninput=e=>{
+  const v=e.target.value;if(!T.t0)T.t0=Date.now();rT(v);sfx(300+Math.random()*60,.03);
+  if(v.length>=T.txt.length){
+    const ok=[...T.txt].filter((c,i)=>v[i]===c).length,sec=Math.max(1,(Date.now()-T.t0)/1000),w=ok/5/(sec/60);
+    $("tmsg").textContent=Math.round(w)+" WPM, "+Math.round(ok/T.txt.length*100)+"% accuracy. +1 test for Bit.";
+    sfx(880,.15);newT();addTests(1,sec,w);
+  }
+};
+$("prompt").onclick=()=>$("ti").focus();
+$("shuf").onclick=newT;newT();
+
+/* ---------- alive-ness: wander, blink, eyes follow cursor ---------- */
+let px=50,dir=1;
+function wander(){
+  if(RM)return;
+  const sl=$("stage").classList.contains("sleep"),nx=sl?50:26+Math.random()*48;
+  if(Math.abs(nx-px)>4)dir=nx>px?1:-1;
+  px=nx;$("pw").style.left=px+"%";$("pet").parentNode.style.setProperty("--dir",dir);
+}
+setInterval(wander,3400);
+(function blink(){
+  setTimeout(()=>{const p=$("pet");if(!$("stage").classList.contains("sleep")){p.style.setProperty("--bl",.1);setTimeout(()=>p.style.setProperty("--bl",1),120)}blink()},2000+Math.random()*3000);
+})();
+addEventListener("pointermove",e=>{
+  const r=$("pet").getBoundingClientRect(),dx=e.clientX-(r.left+r.width/2),dy=e.clientY-(r.top+r.height/2),m=Math.hypot(dx,dy)||1,k=Math.min(1,m/250)*.35;
+  $("pet").style.setProperty("--lx",(dx/m*k).toFixed(2));$("pet").style.setProperty("--ly",(dy/m*k).toFixed(2));
+});
+
+/* ---------- events ---------- */
 $("pet").onclick=e=>{
-  const h=document.createElement("span");h.className="heart";h.textContent="♥";
-  h.style.left=(e.offsetX+e.target.getBoundingClientRect().left-$("pet").parentNode.getBoundingClientRect().left)+"px";
-  h.style.bottom="90px";$("pet").parentNode.appendChild(h);setTimeout(()=>h.remove(),900);
-  $("say").textContent=["Hehe, that tickles!","Do it again.","Ok, now go type.","Love you. Now type."][Math.floor(Math.random()*4)];
+  burst(e.clientX,e.clientY,14,"♥",["#FF7A9C","#FFB3C7","#FF5C7A"]);sfx(600+Math.random()*300,.12);
+  const pf=$("pet").parentNode;pf.classList.remove("boop");void pf.offsetWidth;pf.classList.add("boop");
+  say(["Hehe, that tickles!","Do it again.","Ok, now go type.","Love you. Now type."][Math.floor(Math.random()*4)]);
+};
+$("theme").onclick=()=>{
+  const d=(R.dataset.theme||(matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light"))==="dark";
+  R.dataset.theme=d?"light":"dark";try{localStorage.setItem(KEY+"-th",R.dataset.theme)}catch(e){}
 };
 $("reset").onclick=()=>{if(!confirm("Wipe Bit's progress?"))return;try{localStorage.removeItem(KEY);localStorage.removeItem(KEY+"-ape")}catch(e){}location.reload()};
 $("sync").onclick=sync;
