@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Bit, the typing pet that grows when you type</title>
+    <meta
+      name="description"
+      content="Bit is a pixel pet that lives on a keycap. Type a short passage, watch it hop, and grow through five stages. Optionally sync your Monkeytype stats."
+    />
+    <meta property="og:title" content="Bit, the typing pet" />
+    <meta
+      property="og:description"
+      content="Type to feed a pixel pet. It hops, evolves, and remembers your streak."
+    />
+    <meta
+      name="theme-color"
+      content="#F1EDFF"
+      media="(prefers-color-scheme: light)"
+    />
+    <meta
+      name="theme-color"
+      content="#1E1433"
+      media="(prefers-color-scheme: dark)"
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='4' fill='%23FFB3C7'/%3E%3Crect x='4' y='6' width='2' height='2' fill='%234A2B55'/%3E%3Crect x='10' y='6' width='2' height='2' fill='%234A2B55'/%3E%3Crect x='6' y='10' width='4' height='1' fill='%234A2B55'/%3E%3C/svg%3E"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Figtree:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <a class="logo" href="#top">Bit</a>
+        <nav aria-label="Sections">
+          <a href="#play">Play</a><a href="#progress">Progress</a
+          ><a href="#connect">Monkeytype</a>
+        </nav>
+      </header>
+
+      <main id="top">
+        <div class="hero">
+          <div class="capwrap">
+            <div class="cap" id="keycap">
+              <svg
+                id="pet"
+                viewBox="0 0 12 13"
+                shape-rendering="crispEdges"
+                role="img"
+                aria-label="Bit, your pixel pet"
+              ></svg>
+            </div>
+          </div>
+          <div>
+            <h1>Type a little. Bit grows a lot.</h1>
+            <p class="lead">
+              A pixel pet that lives on a keycap and eats your typing.
+            </p>
+            <p class="stage" id="stageName"></p>
+            <p class="say" id="say"></p>
+            <div
+              class="bar"
+              role="progressbar"
+              aria-label="Progress to next stage"
+            >
+              <i id="fill"></i>
+            </div>
+            <div class="meta">
+              <span id="xpTxt"></span><span id="nextTxt"></span>
+            </div>
+          </div>
+        </div>
+
+        <div id="play" tabindex="-1" aria-label="Typing test">
+          <div id="words" aria-live="off"></div>
+          <input
+            id="cap"
+            autocomplete="off"
+            autocapitalize="off"
+            autocorrect="off"
+            spellcheck="false"
+            aria-label="Type the passage here"
+          />
+          <div class="hint">
+            <span id="res" aria-live="polite"
+              >Click here and start typing.</span
+            >
+            <button class="alt" id="again" type="button">New passage</button>
+          </div>
+        </div>
+
+        <section id="progress">
+          <h2>Your progress</h2>
+          <p class="sec-sub">
+            Saved in this browser. Nothing leaves your device.
+          </p>
+          <div class="stats">
+            <div><b id="streak">0</b>day streak</div>
+            <div><b id="best">0</b>best WPM</div>
+            <div><b id="tests">0</b>tests finished</div>
+            <div><b id="mins">0</b>minutes typed</div>
+          </div>
+        </section>
+
+        <section aria-label="Stages">
+          <h2>Five stages</h2>
+          <p class="sec-sub">Each test earns XP. Faster typing earns more.</p>
+          <ul class="path" id="path"></ul>
+        </section>
+
+        <section aria-label="Activity">
+          <h2>Last 20 weeks</h2>
+          <p class="sec-sub">One square per day. Darker means more tests.</p>
+          <div class="heat" id="heat"></div>
+        </section>
+
+        <section id="connect">
+          <h2>Bring your Monkeytype stats</h2>
+          <p class="sec-sub">
+            Enter your username to add your public totals to Bit's XP.
+          </p>
+          <div class="mt">
+            <input
+              id="user"
+              placeholder="Monkeytype username"
+              autocomplete="off"
+              aria-label="Monkeytype username"
+            />
+            <button id="sync" type="button">Sync stats</button>
+            <button id="unsync" class="alt" type="button">Disconnect</button>
+          </div>
+          <p class="msg" id="msg" aria-live="polite"></p>
+        </section>
+      </main>
+
+      <footer>
+        <span>Bit is a hobby project. Not affiliated with Monkeytype.</span
+        ><button class="alt" id="reset" type="button">Reset progress</button>
+      </footer>
+    </div>
+    <noscript
+      ><p style="padding: 20px">Bit needs JavaScript to run.</p></noscript
+    >
+    <script src="app.js" defer></script>
+  </body>
+</html>
